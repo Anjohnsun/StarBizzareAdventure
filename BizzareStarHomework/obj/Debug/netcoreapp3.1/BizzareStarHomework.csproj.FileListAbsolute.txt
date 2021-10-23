@@ -1,0 +1,14 @@
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\bin\Debug\netcoreapp3.1\BizzareStarHomework.exe
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\bin\Debug\netcoreapp3.1\BizzareStarHomework.deps.json
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\bin\Debug\netcoreapp3.1\BizzareStarHomework.runtimeconfig.json
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\bin\Debug\netcoreapp3.1\BizzareStarHomework.runtimeconfig.dev.json
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\bin\Debug\netcoreapp3.1\BizzareStarHomework.dll
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\bin\Debug\netcoreapp3.1\BizzareStarHomework.pdb
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\obj\Debug\netcoreapp3.1\BizzareStarHomework.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\obj\Debug\netcoreapp3.1\BizzareStarHomework.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\obj\Debug\netcoreapp3.1\BizzareStarHomework.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\obj\Debug\netcoreapp3.1\BizzareStarHomework.AssemblyInfo.cs
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\obj\Debug\netcoreapp3.1\BizzareStarHomework.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\obj\Debug\netcoreapp3.1\BizzareStarHomework.dll
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\obj\Debug\netcoreapp3.1\BizzareStarHomework.pdb
+C:\Users\user\source\repos\BizzareStarHomework\BizzareStarHomework\obj\Debug\netcoreapp3.1\BizzareStarHomework.genruntimeconfig.cache
