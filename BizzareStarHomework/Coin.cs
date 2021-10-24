@@ -9,9 +9,9 @@ namespace BizzareStarHomework
     public partial class Coin : Component
     {
 
-        int[] coinPoses = new int[2];
+        public int[] coinPoses = new int[2];
         private bool isCollected;
-        int playerPoints, enemyPoints = 0;
+        public int playerPoints, enemyPoints = 0;
 
         public Coin()
         {
@@ -22,7 +22,7 @@ namespace BizzareStarHomework
         {
             Random random = new Random();
 
-            coinPoses[0] = (random.Next(0, Console.WindowWidth / 2 - 3)) + Console.WindowWidth / 4;
+            coinPoses[0] = (random.Next(0, Console.WindowWidth / 2 - 3)) + Console.WindowWidth / 4+2;
             coinPoses[1] = (random.Next(0, Console.WindowHeight / 2 - 2)) + Console.WindowHeight / 4 + 1;
 
             if (coinPoses[0] != playerPoses[0] || coinPoses[1] != playerPoses[1])
@@ -39,7 +39,6 @@ namespace BizzareStarHomework
             }
             ReloadPoints();
         }
-
         public bool IsCollected(string creature, int[] poses)
         {
             if (coinPoses[0] == poses[0] && coinPoses[1] == poses[1])
@@ -62,7 +61,6 @@ namespace BizzareStarHomework
             }
             return isCollected;
         }
-
         private void ReloadPoints()
         {
             Console.SetCursorPosition(Console.WindowWidth / 4, Console.WindowHeight / 4 - 2);

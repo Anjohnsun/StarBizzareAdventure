@@ -11,7 +11,7 @@ namespace BizzareStarHomework
         public int[] stCoords = new int[2];
         int xDif, yDif;
 
-        public void CreateCoin(int[] playerPoses, int[] enemyPoses, int[] coinPoses)
+        public void CreateStalker(int[] playerPoses, int[] enemyPoses, int[] coinPoses)
         {
             Random random = new Random();
 
@@ -31,17 +31,50 @@ namespace BizzareStarHomework
                 }
             }
         }
-
         public void StalkerMove(int[] playerPoses)
         {
-            if (playerPoses[0] > stCoords[0])
+            xDif = playerPoses[0] - stCoords[0];
+            yDif = playerPoses[1] - stCoords[1];
+
+            Console.SetCursorPosition(stCoords[0], stCoords[1]);
+            Console.Write(' ');
+
+            if ((xDif < yDif && !(xDif == 0)) || yDif == 0)
             {
-                xDif = playerPoses[0] - stCoords[0];
+                if (xDif < 0)
+                {
+                    stCoords[0]--;
+                }
+                else
+                {
+                    stCoords[0]++;
+                }
+            }
+            else
+            {
+                if (yDif < 0)
+                {
+                    stCoords[1]--;
+                }
+                else
+                {
+                    stCoords[1]++;
+                }
             }
 
-            _ = playerPoses[0] > stCoords[0] ? xDif = playerPoses[0] - stCoords[0] : xDif = stCoords[0] - playerPoses[0];
-            _ = playerPoses[1] > stCoords[1] ? yDif = playerPoses[1] - stCoords[1] : yDif = stCoords[1] - playerPoses[1];
+            Console.SetCursorPosition(stCoords[0], stCoords[1]);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write('@');
         }
 
+        public bool StalkerAway(int[] playerPoses, int[] coinPoses, Coin coin)
+        {
+            if (stCoords[0] == playerPoses[0] && stCoords[1] == playerPoses[1])
+            {
+                Program.StopGame("Stalker");
+                return true;
+            }
+            return false;
+        }
     }
 }

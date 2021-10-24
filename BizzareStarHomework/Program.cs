@@ -12,7 +12,6 @@ namespace BizzareStarHomework
         {
             CreateTable();
             CreatePlayer(Console.WindowWidth / 2, Console.WindowHeight / 2);
-
             PlayGame();
 
             Console.SetCursorPosition(0, 23);
@@ -27,6 +26,7 @@ namespace BizzareStarHomework
             //  int playerPoses[0] = Console.WindowWidth / 2;
             //  int playerPoses[1] = Console.WindowHeight / 2;
             coin.CreateCoin(playerPoses, enPoses, stalker.stCoords);
+            stalker.CreateStalker(playerPoses, enPoses, coin.coinPoses);
 
             bool checkCorrectInput;
             int counter = 0;
@@ -65,7 +65,7 @@ namespace BizzareStarHomework
                         }
                         break;
                     case ConsoleKey.LeftArrow:
-                        if (playerPoses[0] - Console.WindowWidth / 4 > 3)
+                        if (playerPoses[0] - Console.WindowWidth / 4 > 2)
                         {
                             playerPoses[0]--;
                         }
@@ -75,7 +75,7 @@ namespace BizzareStarHomework
                         }
                         break;
                     case ConsoleKey.RightArrow:
-                        if (Console.WindowWidth / 4 * 3 - playerPoses[0] > 3)
+                        if (Console.WindowWidth / 4 * 3 - playerPoses[0] > 2)
                         {
                             playerPoses[0]++;
                         }
@@ -91,7 +91,14 @@ namespace BizzareStarHomework
                 CreatePlayer(playerPoses[0], playerPoses[1]);
 
                 //ход игрока закончился
-                StrangeEnemyAway(playerPoses, enPoses);
+                if (StrangeEnemyAway(playerPoses, enPoses))
+                {
+                    break;
+                }
+                if (stalker.StalkerAway(playerPoses, coin.coinPoses, coin))
+                {
+                    break;
+                }
                 System.Threading.Thread.Sleep(50);
                 //Enemy turn
 
@@ -154,21 +161,29 @@ namespace BizzareStarHomework
                         default:
                             break;
                     }
-
                 }
                 Console.SetCursorPosition(enPoses[0], enPoses[1]);
                 Console.Write('#');
                 counter++;
+                //движение сталкера
+                stalker.StalkerMove(playerPoses);
 
                 //проверка на собранные монеты
                 if (coin.IsCollected("player", playerPoses))
                 {
                     coin.CreateCoin(playerPoses, enPoses, stalker.stCoords);
-                } else if (coin.IsCollected("enemy", enPoses))
+                }
+                else if (coin.IsCollected("enemy", enPoses))
                 {
                     coin.CreateCoin(playerPoses, enPoses, stalker.stCoords);
                 }
+                else if (coin.IsCollected("enemy", stalker.stCoords))
+                {
+                    coin.CreateCoin(playerPoses, enPoses, stalker.stCoords);
+                }
+                //проверка на врага
                 StrangeEnemyAway(playerPoses, enPoses);
+                stalker.StalkerAway(playerPoses, coin.coinPoses, coin);
             }
         }//описан процесс игры
 
@@ -189,10 +204,12 @@ namespace BizzareStarHomework
 
             Console.BackgroundColor = ConsoleColor.Green;
             Console.Clear();
-
+            Console.ForegroundColor = ConsoleColor.White;
             for (int i = widthStart; i < widthStart * 3; i++)
             {
                 Console.SetCursorPosition(i + 1, heightStart);
+                Console.Write('-');
+                Console.SetCursorPosition(i + 1, heightStart * 3);
                 Console.Write('-');
             }
             for (int i = heightStart - 1; i < heightStart * 3; i++)
@@ -201,11 +218,6 @@ namespace BizzareStarHomework
                 Console.Write('|');
                 Console.SetCursorPosition(widthStart * 3, i + 1);
                 Console.Write('|');
-            }
-            for (int i = widthStart; i < widthStart * 3 - 2; i++)
-            {
-                Console.SetCursorPosition(i + 1, heightStart * 3);
-                Console.Write('-');
             }
         }//создание чистого стола
         public static void StopGame(string reason)
@@ -241,6 +253,14 @@ namespace BizzareStarHomework
                     Console.SetCursorPosition(Console.WindowWidth / 2 - 7, Console.WindowHeight / 2);
                     Console.Write("YOU ARE LOOSER!");
                     break;
+                case "Stalker":
+                    CreateTable();
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.SetCursorPosition(Console.WindowWidth / 2 - 9, Console.WindowHeight / 2 - 1);
+                    Console.Write("YOU'RE KILLED BY STALKER");
+                    Console.SetCursorPosition(Console.WindowWidth / 2 - 3, Console.WindowHeight / 2);
+                    Console.Write("SO SAD!");
+                    break;
             }
             Console.ForegroundColor = ConsoleColor.White;
         }//остановка игры
@@ -254,7 +274,7 @@ namespace BizzareStarHomework
             enXPos = (random.Next(0, Console.WindowWidth / 2 - 3)) + Console.WindowWidth / 4;
             enYPos = (random.Next(0, Console.WindowHeight / 2 - 2)) + Console.WindowHeight / 4 + 1;
 
-            if (enXPos == Console.WindowWidth-1 / 2 && enYPos == Console.WindowHeight)
+            if (enXPos == Console.WindowWidth - 1 / 2 && enYPos == Console.WindowHeight)
             {
                 activateEnemy();
             }
@@ -272,16 +292,15 @@ namespace BizzareStarHomework
             int totalWay = random.Next(1, 5);
             return totalWay;
         }//выбор направления для странного врага
-        private static void StrangeEnemyAway(int[] playerPoses, int[] enemyPoses)
+        private static bool StrangeEnemyAway(int[] playerPoses, int[] enemyPoses)
         {
             if (playerPoses[0] == enemyPoses[0] && playerPoses[1] == enemyPoses[1])
             {
                 StopGame("StrangeEnemy");
+                return true;
             }
+            return false;
         }//проверка на проигрыш по странному врагу
-
-
-
     }
 }
 
@@ -292,10 +311,11 @@ namespace BizzareStarHomework
  * 4) задержка перед окончанием игры
  * 5) изменение позиции счётчика
  * 6) изменение надписей при окончании игры
- * 7) 
+ * 7) сталкер может собирать монеты
  * 
  * Нерешённые проблемы: 
- * 1) Ввод непредусмотренных символов
- * 2) Монетка может появиться в недосягаемой зоне(близко к рамке)
- * 3) После окончания игры на поле появляется враг
+ * 1) Ввод непредусмотренных символов  
+ * 2) Монетка может появиться в недосягаемой зоне(близко к рамке)   DONE
+ * 3) После окончания игры на поле появляется враг    DONE
+ * 
  */
